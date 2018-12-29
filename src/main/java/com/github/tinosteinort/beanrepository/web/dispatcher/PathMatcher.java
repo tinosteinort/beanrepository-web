@@ -16,9 +16,18 @@ public class PathMatcher {
                 .map(this::asArray)
                 .get();
 
-        // TODO
+        if (controller.length != incoming.length) {
+            return false;
+        }
 
-        return incomingPath.startsWith(controllerPath);
+        for (int i = 0; i < controller.length; i++) {
+            final boolean match = controller[i].equals(incoming[i]);
+            if (!match) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     String normalise(final String path) {
@@ -35,7 +44,7 @@ public class PathMatcher {
         if (path.endsWith("/") && path.length() > 1) {
             lastIndex = path.length() - 1;
         }
-        return path.substring(firstIndex, lastIndex);
+        return path.substring(firstIndex, lastIndex).toLowerCase();
     }
 
     String[] asArray(final String path) {
